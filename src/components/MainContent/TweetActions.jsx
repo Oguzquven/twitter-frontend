@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export default function TweetActions({
   tweet,
@@ -14,6 +14,20 @@ export default function TweetActions({
   const authHeader = user
     ? "Basic " + btoa(`${user.username}:${user.password}`)
     : "Basic " + btoa("testuser:123456");
+
+  // Sayfa yüklenince kullanıcının bu tweeti beğenip beğenmediğini kontrol et
+  useEffect(() => {
+    if (!user) return;
+    fetch(
+      `http://localhost:3000/like/check?tweetId=${tweet.id}&userId=${user.id}`,
+      {
+        headers: { Authorization: authHeader },
+      },
+    )
+      .then((res) => res.json())
+      .then((isLiked) => setLiked(isLiked))
+      .catch(() => {});
+  }, [tweet.id, user?.id]);
 
   const handleLike = async (e) => {
     e.stopPropagation();
@@ -188,7 +202,7 @@ export default function TweetActions({
             gap: "4px",
             fontSize: "13px",
             cursor: action.onClick ? "pointer" : "default",
-            padding: size === "large" ? "8px" : "8px",
+            padding: "8px",
             borderRadius: "50%",
             transition: "background 0.2s, color 0.2s",
             color: action.active ? action.activeColor : "#536471",
