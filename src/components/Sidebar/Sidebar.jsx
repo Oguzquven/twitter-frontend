@@ -1,8 +1,8 @@
-import { useState } from "react"; // ← BU EKSİKTİ
+import { useState } from "react";
 import Logo from "./Logo";
 import NavItem from "./NavItem";
 import TweetButton from "./TweetButton";
-import SearchBox from "./SearchBox";
+import AccountMenu from "./AccountMenu";
 
 const navItems = [
   {
@@ -47,7 +47,8 @@ const navItems = [
   },
 ];
 
-function Sidebar({ userId, setUserId, onSearch }) {
+// onLogout prop'u eklendi - çıkış yap butonu için
+function Sidebar({ user, onLogout }) {
   const [activeNav, setActiveNav] = useState("Ana Sayfa");
 
   return (
@@ -79,7 +80,8 @@ function Sidebar({ userId, setUserId, onSearch }) {
         ))}
       </nav>
       <TweetButton />
-      <SearchBox userId={userId} setUserId={setUserId} onSearch={onSearch} />
+      {/* onLogout AccountMenu'ye geçiriliyor */}
+      <AccountMenu user={user} onLogout={onLogout} />
     </div>
   );
 }

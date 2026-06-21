@@ -55,6 +55,10 @@ function TweetList({ tweets: propTweets, userId, onUserClick, user }) {
           tweet={tweet}
           onUserClick={onUserClick}
           user={user}
+          // Tweet silinince listeden kaldır
+          onTweetDeleted={(deletedId) =>
+            setTweets((prev) => prev.filter((t) => t.id !== deletedId))
+          }
         />
       ))}
     </div>
